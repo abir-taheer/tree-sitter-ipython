@@ -5,9 +5,7 @@
       "camelcase": "Ipython",
       "scope": "source.ipython",
       "path": ".",
-      "file-types": [
-        "ipy"
-      ],
+      "file-types": ["ipy"],
       "highlights": "queries/highlights.scm",
       "injection-regex": "^ipython$"
     }

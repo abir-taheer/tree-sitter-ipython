@@ -6361,42 +6361,15 @@
     }
   ],
   "conflicts": [
-    [
-      "primary_expression",
-      "pattern"
-    ],
-    [
-      "primary_expression",
-      "list_splat_pattern"
-    ],
-    [
-      "tuple",
-      "tuple_pattern"
-    ],
-    [
-      "list",
-      "list_pattern"
-    ],
-    [
-      "with_item",
-      "_collection_elements"
-    ],
-    [
-      "named_expression",
-      "as_pattern"
-    ],
-    [
-      "print_statement",
-      "primary_expression"
-    ],
-    [
-      "type_alias_statement",
-      "primary_expression"
-    ],
-    [
-      "match_statement",
-      "primary_expression"
-    ]
+    ["primary_expression", "pattern"],
+    ["primary_expression", "list_splat_pattern"],
+    ["tuple", "tuple_pattern"],
+    ["list", "list_pattern"],
+    ["with_item", "_collection_elements"],
+    ["named_expression", "as_pattern"],
+    ["print_statement", "primary_expression"],
+    ["type_alias_statement", "primary_expression"],
+    ["match_statement", "primary_expression"]
   ],
   "precedences": [],
   "externals": [

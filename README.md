@@ -18,8 +18,8 @@ npm install tree-sitter-ipython
 ## Usage
 
 ```javascript
-const Parser = require('tree-sitter');
-const IPython = require('tree-sitter-ipython');
+const Parser = require("tree-sitter");
+const IPython = require("tree-sitter-ipython");
 
 const parser = new Parser();
 parser.setLanguage(IPython);
@@ -39,6 +39,7 @@ console.log(tree.rootNode.toString());
 ## Node Types
 
 ### Line Magic
+
 ```
 (line_magic
   (magic_operator)      ; the % symbol
@@ -47,6 +48,7 @@ console.log(tree.rootNode.toString());
 ```
 
 ### Cell Magic
+
 ```
 (cell_magic
   (cell_magic_operator) ; the %% symbol
@@ -55,6 +57,7 @@ console.log(tree.rootNode.toString());
 ```
 
 ### Shell Escape
+
 ```
 (shell_escape
   (shell_operator)      ; the ! symbol
