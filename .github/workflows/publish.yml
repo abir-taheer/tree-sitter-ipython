@@ -1,0 +1,127 @@
+name: Publish Package
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  id-token: write # Required for OIDC provenance
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux x64
+          - os: ubuntu-24.04
+            arch: x64
+            name: linux-x64
+            tree_sitter_url: https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-x64.gz
+          # Linux arm64
+          - os: ubuntu-24.04-arm
+            arch: arm64
+            name: linux-arm64
+            tree_sitter_url: https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-arm64.gz
+          # Windows x64
+          - os: windows-latest
+            arch: x64
+            name: windows-x64
+            tree_sitter_url: https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-windows-x64.gz
+          # Windows arm64
+          - os: windows-11-arm
+            arch: arm64
+            name: windows-arm64
+            tree_sitter_url: https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-windows-arm64.gz
+          # macOS Intel (x64)
+          - os: macos-15-intel
+            arch: x64
+            name: macos-x64
+            tree_sitter_url: https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-macos-x64.gz
+          # macOS Apple Silicon (arm64)
+          - os: macos-latest
+            arch: arm64
+            name: macos-arm64
+            tree_sitter_url: https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-macos-arm64.gz
+
+    runs-on: ${{ matrix.os }}
+    name: Build ${{ matrix.name }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install tree-sitter CLI (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          curl -L ${{ matrix.tree_sitter_url }} | gunzip > tree-sitter
+          chmod +x tree-sitter
+          sudo mv tree-sitter /usr/local/bin/
+
+      - name: Install tree-sitter CLI (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "${{ matrix.tree_sitter_url }}" -OutFile "tree-sitter.gz"
+          & "C:\Program Files\Git\usr\bin\gzip.exe" -d tree-sitter.gz
+          Move-Item tree-sitter tree-sitter.exe
+          New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\bin"
+          Move-Item tree-sitter.exe "$env:USERPROFILE\bin\"
+          echo "$env:USERPROFILE\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts
+
+      - name: Build native module
+        run: npx node-gyp rebuild
+
+      - name: Test
+        run: tree-sitter test
+
+      - name: Create prebuilds
+        run: npm run prebuild
+
+      - name: Upload prebuilds
+        uses: actions/upload-artifact@v4
+        with:
+          name: prebuilds-${{ matrix.name }}
+          path: prebuilds/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts
+
+      - name: Build native module
+        run: npx node-gyp rebuild
+
+      - name: Download all prebuilds
+        uses: actions/download-artifact@v4
+        with:
+          path: prebuilds/
+          pattern: prebuilds-*
+          merge-multiple: true
+
+      - name: List prebuilds
+        run: ls -laR prebuilds/
+
+      - name: Publish
+        run: npm publish --provenance --access public

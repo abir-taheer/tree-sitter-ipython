@@ -1,0 +1,31 @@
+{
+  "grammars": [
+    {
+      "name": "ipython",
+      "camelcase": "Ipython",
+      "scope": "source.ipython",
+      "path": ".",
+      "file-types": [
+        "ipy"
+      ],
+      "highlights": "queries/highlights.scm",
+      "injection-regex": "^ipython$"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "IPython grammar for tree-sitter (extends Python with magic support)",
+    "links": {
+      "repository": "https://github.com/abir-taheer/tree-sitter-ipython"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true
+  }
+}

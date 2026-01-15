@@ -1,0 +1,64 @@
+{
+  "name": "tree-sitter-ipython",
+  "version": "1.0.1",
+  "description": "IPython grammar for tree-sitter (extends Python with magic support)",
+  "main": "bindings/node",
+  "types": "bindings/node",
+  "exports": {
+    ".": {
+      "types": "./bindings/node/index.d.ts",
+      "require": "./bindings/node/index.js",
+      "default": "./bindings/node/index.js"
+    },
+    "./grammar": "./grammar.js",
+    "./package.json": "./package.json"
+  },
+  "keywords": [
+    "incremental",
+    "parsing",
+    "parser",
+    "tree-sitter",
+    "ipython",
+    "jupyter",
+    "python",
+    "magic"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abir-taheer/tree-sitter-ipython"
+  },
+  "license": "MIT",
+  "files": [
+    "grammar.js",
+    "binding.gyp",
+    "prebuilds/**",
+    "bindings/node/*",
+    "queries/*",
+    "src/**",
+    "tree-sitter.json"
+  ],
+  "dependencies": {
+    "node-addon-api": ">=7.0.0",
+    "node-gyp-build": ">=4.0.0"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": ">=0.22.0",
+    "tree-sitter-python": ">=0.21.0",
+    "prebuildify": ">=6.0.0"
+  },
+  "peerDependencies": {
+    "tree-sitter": ">=0.21.0"
+  },
+  "peerDependenciesMeta": {
+    "tree-sitter": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "install": "node-gyp-build",
+    "build": "tree-sitter generate && node-gyp rebuild",
+    "generate": "tree-sitter generate",
+    "test": "tree-sitter test",
+    "prebuild": "prebuildify --napi --strip"
+  }
+}

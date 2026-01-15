@@ -1,0 +1,64 @@
+================================================================================
+Mixed Python and magics
+================================================================================
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+x = [1, 2, 3]
+
+--------------------------------------------------------------------------------
+
+(module
+  (line_magic
+    (magic_operator)
+    name: (magic_name)
+    arguments: (magic_arguments))
+  (import_statement
+    name: (aliased_import
+      name: (dotted_name
+        (identifier)
+        (identifier))
+      alias: (identifier)))
+  (expression_statement
+    (assignment
+      left: (identifier)
+      right: (list
+        (integer)
+        (integer)
+        (integer)))))
+
+================================================================================
+Magic and shell together
+================================================================================
+
+%pwd
+!ls -la
+
+--------------------------------------------------------------------------------
+
+(module
+  (line_magic
+    (magic_operator)
+    name: (magic_name))
+  (shell_escape
+    (shell_operator)
+    command: (shell_content)))
+
+================================================================================
+Python function with magic inside is not valid
+================================================================================
+
+def foo():
+    x = 1
+
+--------------------------------------------------------------------------------
+
+(module
+  (function_definition
+    name: (identifier)
+    parameters: (parameters)
+    body: (block
+      (expression_statement
+        (assignment
+          left: (identifier)
+          right: (integer))))))
