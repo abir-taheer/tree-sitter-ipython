@@ -2467,11 +2467,6 @@
     }
   },
   {
-    "type": "magic_arguments",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "match_statement",
     "named": true,
     "fields": {
@@ -2860,11 +2855,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "shell_content",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "shell_escape",
@@ -3801,6 +3791,10 @@
     "named": true
   },
   {
+    "type": "magic_arguments",
+    "named": true
+  },
+  {
     "type": "magic_name",
     "named": true
   },
@@ -3843,6 +3837,10 @@
   {
     "type": "return",
     "named": false
+  },
+  {
+    "type": "shell_content",
+    "named": true
   },
   {
     "type": "shell_operator",

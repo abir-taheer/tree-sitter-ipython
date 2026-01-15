@@ -6339,7 +6339,7 @@
     },
     "magic_arguments": {
       "type": "PATTERN",
-      "value": "[^\\r\\n]+"
+      "value": "[^\\s\\r\\n][^\\r\\n]*"
     },
     "shell_content": {
       "type": "PATTERN",

@@ -47,8 +47,8 @@ module.exports = grammar(python, {
     // Magic command name (alphanumeric + underscore, can have ? or ?? suffix for help)
     magic_name: $ => /[a-zA-Z_][a-zA-Z0-9_]*\??/,
 
-    // Magic arguments (rest of line after command name)
-    magic_arguments: $ => /[^\r\n]+/,
+    // Magic arguments (rest of line after command name, excluding leading whitespace)
+    magic_arguments: $ => /[^\s\r\n][^\r\n]*/,
 
     // Shell command content (rest of line after !)
     shell_content: $ => /[^\r\n]+/,
